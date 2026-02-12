@@ -1,40 +1,55 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
-    <title>UPB Tareas (JPA)</title>
+    <title>Registro de Estudiantes UPB</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
 <body class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h2 class="text-center mb-4">Gestor de Tareas (Spring Data JPA)</h2>
+        <div class="col-md-10">
+            <h2 class="text-center mb-4">Sistema de Registro de Estudiantes</h2>
 
-            <div class="card p-3 mb-4 shadow-sm">
-                <form th:action="@{/guardar}" th:object="${nuevaTarea}" method="post" class="input-group">
-                    <input type="text" th:field="*{descripcion}" class="form-control" placeholder="Nueva tarea..."
-                        required>
-                    <button type="submit" class="btn btn-success">Guardar</button>
+            <div class="card p-4 mb-4 shadow-sm">
+                <form th:action="@{/guardar}" th:object="${nuevoEstudiante}" method="post">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <input type="text" th:field="*{id}" class="form-control" placeholder="ID Estudiante" required>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" th:field="*{nombre}" class="form-control" placeholder="Nombre" required>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" th:field="*{carrera}" class="form-control" placeholder="Carrera" required>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary w-100">Registrar</button>
+                        </div>
+                    </div>
                 </form>
             </div>
 
-            <div class="list-group">
-                <div th:each="tarea : ${tareas}"
-                    class="list-group-item d-flex justify-content-between align-items-center">
-                    <div>
-                        <span class="fw-bold" th:text="${tarea.id}">#</span>
-                        <span th:text="${tarea.descripcion}" class="ms-2">Descripción</span>
-                    </div>
-                    <a th:href="@{/eliminar/{id}(id=${tarea.id})}" class="btn btn-outline-danger btn-sm">Eliminar</a>
-                </div>
-
-                <div th:if="${#lists.isEmpty(tareas)}" class="alert alert-secondary text-center">
-                    Base de datos vacía. ¡Agrega una tarea!
-                </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover border">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre Completo</th>
+                            <th>Carrera</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="est : ${estudiantes}">
+                            <td th:text="${est.id}" class="fw-bold"></td>
+                            <td th:text="${est.nombre}"></td>
+                            <td th:text="${est.carrera}"></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(estudiantes)}">
+                            <td colspan="3" class="text-center text-muted">No hay estudiantes registrados en memoria.</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </body>
-
 </html>
